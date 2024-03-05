@@ -3,8 +3,6 @@ package io.github.keeeper.learningspring.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import javax.annotation.processing.Generated;
-
 @Entity
 @Table(name = "tasks")
 public class Task {
