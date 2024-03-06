@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -39,13 +40,27 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/tasks/{id}")
-    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody Task toUpdate){
+    @Transactional
+    @PatchMapping("/tasks/{id}")
+    ResponseEntity<?> toggleTask(@PathVariable int id){
         if (!repository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
-        repository.save(toUpdate);
+        repository.findById(id).
+                ifPresent(task -> task.setDone(!task.isDone()));
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/tasks/{id}")
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate){
+        if (!repository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .ifPresent(task -> {task.updateFrom(toUpdate);
+                repository.save(task);});
+
         return ResponseEntity.noContent().build();
     }
 
