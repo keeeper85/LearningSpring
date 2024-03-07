@@ -3,7 +3,6 @@ package io.github.keeeper.learningspring.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -17,6 +16,9 @@ public class TaskGroup {
     private boolean done;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Task> tasks;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public TaskGroup() {
     }
