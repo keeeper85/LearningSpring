@@ -11,10 +11,13 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "Tak description must not be empty.")
+    @NotBlank(message = "Task description must not be empty.")
     private String description;
     private boolean done;
     private LocalDateTime deadline;
+    @ManyToOne
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
     @Embedded
     private Audit audit = new Audit();
 
@@ -54,8 +57,9 @@ public class Task {
     }
 
     public void updateFrom(Task toUpdate){
-        description = toUpdate.getDescription();
-        deadline = toUpdate.getDeadline();
-        done = toUpdate.isDone();
+        description = toUpdate.description;
+        deadline = toUpdate.deadline;
+        done = toUpdate.done;
+        group = toUpdate.group;
     }
 }
