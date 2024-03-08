@@ -21,7 +21,12 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
 
-    public Task() {
+    Task() {
+    }
+
+    public Task(String description, LocalDateTime deadline) {
+        this.description = description;
+        this.deadline = deadline;
     }
 
     void setId(int id) {
