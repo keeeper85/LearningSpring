@@ -42,11 +42,11 @@ public class GroupReadModel {
         this.deadline = deadline;
     }
 
-    public Set<GroupReadModel> getTasks() {
+    public Set<GroupTaskReadModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<GroupReadModel> tasks) {
+    public void setTasks(Set<GroupTaskReadModel> tasks) {
         this.tasks = tasks;
     }
 }
