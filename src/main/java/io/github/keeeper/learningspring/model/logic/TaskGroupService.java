@@ -6,12 +6,17 @@ import io.github.keeeper.learningspring.model.TaskGroupRepository;
 import io.github.keeeper.learningspring.model.TaskRepository;
 import io.github.keeeper.learningspring.model.projection.GroupReadModel;
 import io.github.keeeper.learningspring.model.projection.GroupWriteModel;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequestScope
 public class TaskGroupService {
     private TaskGroupRepository repository;
     private TaskRepository taskRepository;
@@ -38,5 +43,6 @@ public class TaskGroupService {
         TaskGroup result = repository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Task id is invalid."));
         result.setDone(!result.isDone());
+        repository.save(result);
     }
 }
