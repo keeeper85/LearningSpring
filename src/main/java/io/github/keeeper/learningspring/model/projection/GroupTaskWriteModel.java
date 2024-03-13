@@ -1,6 +1,7 @@
 package io.github.keeeper.learningspring.model.projection;
 
 import io.github.keeeper.learningspring.model.Task;
+import io.github.keeeper.learningspring.model.TaskGroup;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +26,7 @@ public class GroupTaskWriteModel {
         this.deadline = deadline;
     }
 
-    public Task toTask(){
-        return new Task(description, deadline);
+    public Task toTask(TaskGroup group){
+        return new Task(description, deadline, group);
     }
 }

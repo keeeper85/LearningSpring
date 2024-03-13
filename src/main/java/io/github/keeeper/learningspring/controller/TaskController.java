@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
     private final TaskRepository repository;
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
@@ -22,26 +23,33 @@ public class TaskController {
     public TaskController(TaskRepository repository) {
         this.repository = repository;
     }
-    @GetMapping(path = "/tasks", params = {"!sort", "!page", "!size"})
+    @GetMapping(params = {"!sort", "!page", "!size"})
     ResponseEntity<List<Task>> readAllTasks(){
         logger.warn("Exposing all tasks!");
         return ResponseEntity.ok(repository.findAll());
     }
-    @GetMapping("/tasks")
+    @GetMapping
     ResponseEntity<List<Task>> readAllTasks(Pageable page){
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<Task> readTask(@PathVariable int id){
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search/done")
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam boolean state){
+        return ResponseEntity.ok(
+                repository.findByDone(state)
+        );
+    }
+
     @Transactional
-    @PatchMapping("/tasks/{id}")
+    @PatchMapping("/{id}")
     ResponseEntity<?> toggleTask(@PathVariable int id){
         if (!repository.existsById(id)){
             return ResponseEntity.notFound().build();
@@ -52,7 +60,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate){
         if (!repository.existsById(id)){
             return ResponseEntity.notFound().build();
@@ -64,7 +72,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/tasks")
+    @PostMapping
     ResponseEntity<Task> saveTask(@RequestBody @Valid Task toCreate){
         Task result = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
