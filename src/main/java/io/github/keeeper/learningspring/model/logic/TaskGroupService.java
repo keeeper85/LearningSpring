@@ -1,6 +1,7 @@
 package io.github.keeeper.learningspring.model.logic;
 
 import io.github.keeeper.learningspring.TaskConfigurationProperties;
+import io.github.keeeper.learningspring.model.Project;
 import io.github.keeeper.learningspring.model.TaskGroup;
 import io.github.keeeper.learningspring.model.TaskGroupRepository;
 import io.github.keeeper.learningspring.model.TaskRepository;
@@ -27,10 +28,12 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source){
-        TaskGroup result = repository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+    GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
-
     public List<GroupReadModel> readAll(){
         return repository.findAll().stream()
                 .map(GroupReadModel::new)
@@ -45,4 +48,6 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
+
+
 }
