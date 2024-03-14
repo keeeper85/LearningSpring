@@ -21,7 +21,7 @@ public class Task {
     @Embedded
     private Audit audit = new Audit();
 
-    Task() {
+    public Task() {
     }
 
     public Task(String description, LocalDateTime deadline) {
@@ -33,7 +33,6 @@ public class Task {
         this.deadline = deadline;
         if (group != null) this.group = group;
     }
-
     void setId(int id) {
         this.id = id;
     }
