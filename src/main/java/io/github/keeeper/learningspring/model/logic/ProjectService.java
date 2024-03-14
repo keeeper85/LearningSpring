@@ -5,6 +5,7 @@ import io.github.keeeper.learningspring.model.*;
 import io.github.keeeper.learningspring.model.projection.GroupReadModel;
 import io.github.keeeper.learningspring.model.projection.GroupTaskWriteModel;
 import io.github.keeeper.learningspring.model.projection.GroupWriteModel;
+import io.github.keeeper.learningspring.model.projection.ProjectWriteModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,8 +31,8 @@ public class ProjectService {
         return repository.findAll();
     }
 
-    public Project save(Project toSave){
-        return repository.save(toSave);
+    public Project save(ProjectWriteModel toSave){
+        return repository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId){
