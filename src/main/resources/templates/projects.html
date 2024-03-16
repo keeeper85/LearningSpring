@@ -47,7 +47,9 @@
         <legend>Nowy projekt</legend>
         <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
             <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
-        <label>Opis<input type="text" th:field="*{description}" th:errorclass="'BdC(red)'"/>
+        <label>Opis
+            <input type="text" th:field="*{description}" th:errorclass="'BdC(red)'"/>
+            </label>
             <fieldset th:each="step, stepStat: *{steps}">
                 <legend th:text="|Krok ${stepStat.index + 1}|"></legend>
                 <label>Opis
@@ -57,7 +59,6 @@
                     <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}" th:errorclass="'BdC(red)'">
                 </label>
             </fieldset>
-        </label>
         <div>
             <button type="submit" name="addStep">+</button>
         </div>
@@ -67,7 +68,6 @@
             <button type="submit">Dodaj</button>
             <button type=reset>Wyczyść</button>
         </p>
-
 </main>
 
 </body>
